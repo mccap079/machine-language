@@ -1,0 +1,2809 @@
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>machine-language</title>
+    <style>
+        body{
+            background-color: #7e7e7e;
+            height: 100vh;
+        }
+        canvas{
+            display: block;
+            margin-left: auto;
+            margin-right: auto
+        }
+    </style>
+  </head>
+  <body>
+   <script src="main.js"></script>
+  </body>
+</html> -->
+
+ <!--
+__________/\/\______/\/\______/\/\____/\/\/\/\/\____/\/\/\/\/\__
+_______/\/\/\/\____/\/\/\__/\/\/\__/\/\__________/\/\__________
+____/\/\____/\/\__/\/\/\/\/\/\/\__/\/\__________/\/\__________
+___/\/\/\/\/\/\__/\/\__/\__/\/\__/\/\__________/\/\__________
+__/\/\____/\/\__/\/\______/\/\____/\/\/\/\/\____/\/\/\/\/\__
+___________________________________________________________
+__________ copyright (c) 2022 andrew mccausland __________
+_______________________ <p-am.cc> _______________________
+________________________________________________________
+
+-->
+
+<!doctype html>
+<html class="no-js" lang="">
+<head>
+    <meta name="Public-Key-Pins" content="pin-sha256=&quot;base64+primary==&quot;; pin-sha256=&quot;base64+backup==&quot;; max-age=5184000; includeSubDomains"> <!-- protects site from MiTM attacks using rogue X.509 certificates -->
+    <meta name="X-Frame-Options" value="DENY">
+    <meta name="referrer" content="no-referrer"> <!-- keeps sites from seeing where outgoing traffic came from -->
+
+    <title>machine language</title>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="ml.css">
+    <script src="modernizr-2.8.3.min.js"></script>
+
+    <script>
+       window.addEventListener('load', init);
+
+       function init() {
+           var isInCircle = false;
+           //mouse in
+           document.getElementById('circle').addEventListener('mouseover', function(e) {
+               document.getElementById('image').setAttribute('style', 'visibility: hidden');
+           });
+
+           //mouse out
+           document.getElementById('circle').addEventListener('mouseout', function(e) {
+               document.getElementById('image').setAttribute('style', 'visibility: visible');
+           });		    
+       }
+   </script>
+
+</head>
+<body>
+    <script type="text/javascript">
+        //post embed
+       function embedToggle(id){
+           console.log("id = " + id);
+           var contentId = document.getElementById(id);
+           contentId.style.display == "block" ? contentId.style.display = "none" : contentId.style.display = "block";
+           contentId.src="https://archive.org/embed/machineLanguage/" + id + ".mp3";
+       }
+   </script>
+    <div id="overlayImg">
+        <img id="image" src="circle.gif">
+    </div>
+    <div id="overlaySvg">
+        <svg width="300" height="300">
+            <circle id="circle" cx="150" cy="150" r="150" fill="rgba(0,0,0,0)"/>
+        </svg>
+    </div>
+    <div id="threejs_canvas" style="pointer-events: none;">
+        <!-- <script src="js\threejsLocalizedLibs\three.min.js"></script> -->
+        <!-- <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/175711/bas.min.1.1.3.js'></script> -->
+        <!-- <script src='machineLanguage/three_post.js'></script> -->
+        <script src="main.js"></script>
+    </div>
+    <div class="main">
+        <img id="portrait" class="shadowed" src="20180515_machineLanguageLogo_small.png">
+        <p class="h6">
+            <strong><a class="Link" href="http://p-am.cc/ml">Machine Language archives</a></strong><br />
+            <span class="subItem1">with deejay Andrew :^)<br />
+                89.1FM NYC area<br />
+                <span style="text-decoration: line-through;">Wednesdays 9:30—11PM <i>(previously Saturdays 6:00-8AM)</i></span> <span style="background-color:rgb(214,255,0)"> RIP? TBD!</span><br />
+            </span>
+        </p>
+
+        <hr><br />
+
+        <br />
+
+        <p><strong>2018 05 02</strong></p>
+        <div class="cat">
+            <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20180502')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20180502.mp3">External link</a><br />
+                <iframe id="ML_20180502" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+            <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Big City Orchestra / Ubuibi</td>
+                   <td>Brailedeck Freakout</td>
+                   <td>WFMU Radio Special</td>
+                   <td>Self-Released</td>
+                   <td>1996</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Big City Orchestra / Ubuibi</td>
+                   <td>Mind of the Orchestre</td>
+                   <td>WFMU Radio Special</td>
+                   <td>Self-Released</td>
+                   <td>1996</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Big City Orchestra / Ubuibi</td>
+                   <td>Instructional Mix</td>
+                   <td>WFMU Radio Special</td>
+                   <td>Self-Released</td>
+                   <td>1996</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Big City Orchestra / Ubuibi</td>
+                   <td>Station ID</td>
+                   <td>WFMU Radio Special</td>
+                   <td>Self-Released</td>
+                   <td>1996</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Big City Orchestra / Ubuibi</td>
+                   <td>Sex</td>
+                   <td>WFMU Radio Special</td>
+                   <td>Self-Released</td>
+                   <td>1996</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Terekke</td>
+                   <td>220+g</td>
+                   <td>ImproVisational Loops</td>
+                   <td>Music From Memory</td>
+                   <td>2018</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Daniel M Karlsson</td>
+                   <td>Common Ownership</td>
+                   <td>N/A</td>
+                   <td>Self-Released</td>
+                   <td>2014</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>C. Reider</td>
+                   <td>Black Witch Moth (Ascalapha Odorata)</td>
+                   <td>Pairs of Opposites Imply Unity</td>
+                   <td>Self-Released</td>
+                   <td>2018</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>H.N.A.S.</td>
+                   <td>Side A</td>
+                   <td>Melchior (Aufmarsch Der Schlampen)</td>
+                   <td>United Dairies</td>
+                   <td>1986</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>Erik Wøllo</td>
+                   <td>The Change</td>
+                   <td>Traces</td>
+                   <td>Cicada Records</td>
+                   <td>1995</td>
+               </tr>
+           </table>
+           <br />
+
+        </div>
+
+        <p><strong>2018 04 25</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20180425')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20180425.mp3">External link</a><br />
+                <iframe id="ML_20180425" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Mahogany Brain</td>
+                   <td>Burning the Vibes</td>
+                   <td>Smooth Sick Lights</td>
+                   <td>Spalax Music</td>
+                   <td>1997</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Herbcraft</td>
+                   <td>No More Doors</td>
+                   <td>Wot Oz</td>
+                   <td>Woodsist</td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Philippe Robert & Joaquim Vidal</td>
+                   <td>Espace D'Un Instant</td>
+                   <td>Dix-Huit Surprises Pour Noël!</td>
+                   <td>De Qualité</td>
+                   <td>1981</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Guy Boulanger</td>
+                   <td>Electro-Choc</td>
+                   <td>Industry</td>
+                   <td>Patchwork</td>
+                   <td>1978</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Guy Boulanger</td>
+                   <td>X 4</td>
+                   <td>Industry</td>
+                   <td>Patchwork</td>
+                   <td>1978</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Edgar Vercy</td>
+                   <td>Expansion 1</td>
+                   <td>Industry</td>
+                   <td>Patchwork</td>
+                   <td>1978</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Kites</td>
+                   <td>Screw Style</td>
+                   <td>The Hidden Family / +White+</td>
+                   <td>Load</td>
+                   <td>2004</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Kites</td>
+                   <td>Tears of the Youth</td>
+                   <td>The Hidden Family / +White+</td>
+                   <td>Load</td>
+                   <td>2004</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>Neon Worm</td>
+                   <td>Panic Attack</td>
+                   <td>Dictaphonia Microcassette Compilation, Volume Three </td>
+                   <td>HalTapes</td>
+                   <td>2009</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>Bisexual Swinger</td>
+                   <td>The Exercist</td>
+                   <td>Dictaphonia Microcassette Compilation, Volume Three </td>
+                   <td>HalTapes</td>
+                   <td>2009</td>
+               </tr>
+               <tr>
+                   <td>11</td>
+                   <td>Ecoute La Merde</td>
+                   <td>Le Grand Guignol</td>
+                   <td>Dictaphonia Microcassette Compilation, Volume Three </td>
+                   <td>HalTapes</td>
+                   <td>2009</td>
+               </tr>
+               <tr>
+                   <td>12</td>
+                   <td>Egg</td>
+                   <td>Transmutations in Juarez</td>
+                   <td>Dictaphonia Microcassette Compilation, Volume Three </td>
+                   <td>HalTapes</td>
+                   <td>2009</td>
+               </tr>
+               <tr>
+                   <td>13</td>
+                   <td>Fludd</td>
+                   <td>Reso-nuances</td>
+                   <td>Dictaphonia Microcassette Compilation, Volume Three </td>
+                   <td>HalTapes</td>
+                   <td>2009</td>
+               </tr>
+               <tr>
+                   <td>14</td>
+                   <td>Johnny Brewton</td>
+                   <td>Frequency Oblique No. 001</td>
+                   <td>Dictaphonia Microcassette Compilation, Volume Three </td>
+                   <td>HalTapes</td>
+                   <td>2009</td>
+               </tr>
+               <tr>
+                   <td>15</td>
+                   <td>Toshimaru Nakamura</td>
+                   <td>Nimb #48</td>
+                   <td>No Input Mixing Board #8</td>
+                   <td>Oral</td>
+                   <td>2013</td>
+               </tr>
+               <tr>
+                   <td>16</td>
+                   <td>Intersystems</td>
+                   <td>Kaleidoscope (Sweet Impossible Dreams)</td>
+                   <td>Free Psychedelic Poster Inside</td>
+                   <td>Streamline</td>
+                   <td>1994</td>
+               </tr>
+               <tr>
+                   <td>17</td>
+                   <td>Cyrus</td>
+                   <td>Enforcement (Recall)</td>
+                   <td>Enforcement</td>
+                   <td>Basic Channel</td>
+                   <td>1993</td>
+               </tr>
+           </table>
+           <br />
+
+       </div>
+
+       <p><strong>2018 04 18</strong></p>
+        <div class="cat">
+            <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20180418')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20180418.mp3">External link</a><br />
+                <iframe id="ML_20180418" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+            <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>The Vitamin B12</td>
+                   <td>Side B</td>
+                   <td>Laleh Ladan Gatefold Set</td>
+                   <td>Little Gems</td>
+                   <td>2003</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Josh Burke</td>
+                   <td>Side B</td>
+                   <td>Untitled</td>
+                   <td>Self-Released</td>
+                   <td>2011</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Shuttle358</td>
+                   <td>Waves</td>
+                   <td>Field</td>
+                   <td>12k</td>
+                   <td>2018</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Shuttle358</td>
+                   <td>Divide</td>
+                   <td>Field</td>
+                   <td>12k</td>
+                   <td>2018</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Shuttle358</td>
+                   <td>Blue</td>
+                   <td>Field</td>
+                   <td>12k</td>
+                   <td>2018</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Shuttle358</td>
+                   <td>Farming</td>
+                   <td>Field</td>
+                   <td>12k</td>
+                   <td>2018</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Kink Gong</td>
+                   <td>Ba</td>
+                   <td>Dian Long</td>
+                   <td>Discrepant</td>
+                   <td>2018</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Kink Gong</td>
+                   <td>Wo</td>
+                   <td>Dian Long</td>
+                   <td>Discrepant</td>
+                   <td>2018</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>Kink Gong</td>
+                   <td>Hit Qin Qin</td>
+                   <td>Dian Long</td>
+                   <td>Discrepant</td>
+                   <td>2018</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>Kink Gong</td>
+                   <td>Jing Jiu</td>
+                   <td>Dian Long</td>
+                   <td>Discrepant</td>
+                   <td>2018</td>
+               </tr>
+               <tr>
+                   <td>11</td>
+                   <td>Kink Gong</td>
+                   <td>Shanghai</td>
+                   <td>Dian Long</td>
+                   <td>Discrepant</td>
+                   <td>2018</td>
+               </tr>
+               <tr>
+                   <td>12</td>
+                   <td>John Duncan</td>
+                   <td>Party Talk</td>
+                   <td>EMS Sessions, Volume 1</td>
+                   <td>iDeal Recordings</td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>13</td>
+                   <td>Eva Johanna Reichstag</td>
+                   <td>Wistfull Acid</td>
+                   <td>Chronology - The Bain Total Years 1.977-1.985</td>
+                   <td>Vinyl-On-Demand</td>
+                   <td>2010</td>
+               </tr>
+               <tr>
+                   <td>14</td>
+                   <td>Dominique Urruty & Alain Pype</td>
+                   <td>Electrostatique</td>
+                   <td>Hypothese</td>
+                   <td>Editions Montparnasse 2000</td>
+                   <td>197?</td>
+               </tr>
+           </table>
+           <br />
+
+        </div>
+
+        <p><strong>2018 04 11</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20180411')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20180411.mp3">External link</a><br />
+                <iframe id="ML_20180411" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Nocturnal Emissions</td>
+                   <td>Side B</td>
+                   <td>Live At Ritzy Brixton 9 June 1983</td>
+                   <td>Cause For Concern</td>
+                   <td>1983</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>µ0</td>
+                   <td>.appnd Omni Verse</td>
+                   <td>.appnd</td>
+                   <td>Crónica</td>
+                   <td>2017</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>µ0</td>
+                   <td>.appnd ch.owning</td>
+                   <td>.appnd</td>
+                   <td>Crónica</td>
+                   <td>2017</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Andy Ortmann</td>
+                   <td>Dagdagiel's Dilemma</td>
+                   <td>The Noise From Ridgewood - A Benefit Compilation For The Silent Barn</td>
+                   <td>Obsolete Units</td>
+                   <td>2011</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Electric Company And Vas Deferens Organization</td>
+                   <td>Mind Of Ashes</td>
+                   <td>More Pelvis Wick For The Baloney Boners</td>
+                   <td>Tekito</td>
+                   <td>1999</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Electric Company And Vas Deferens Organization</td>
+                   <td>Hushed Plateau Of Gelid Elves</td>
+                   <td>More Pelvis Wick For The Baloney Boners</td>
+                   <td>Tekito</td>
+                   <td>1999</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Electric Company And Vas Deferens Organization</td>
+                   <td>Snappy Smarm</td>
+                   <td>More Pelvis Wick For The Baloney Boners</td>
+                   <td>Tekito</td>
+                   <td>1999</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Electric Company And Vas Deferens Organization</td>
+                   <td>Anomie Amongst The Crumbs</td>
+                   <td>More Pelvis Wick For The Baloney Boners</td>
+                   <td>Tekito</td>
+                   <td>1999</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>Rotorik</td>
+                   <td>Global Positioning</td>
+                   <td>Live At The Rotodrôme</td>
+                   <td>Acido Records</td>
+                   <td>2006</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>Rotorik</td>
+                   <td>Danger Phreak</td>
+                   <td>Live At The Rotodrôme</td>
+                   <td>Acido Records</td>
+                   <td>2006</td>
+               </tr>
+               <tr>
+                   <td>11</td>
+                   <td>Rotorik</td>
+                   <td>Verschollen In Der Unendlichkeit</td>
+                   <td>Live At The Rotodrôme</td>
+                   <td>Acido Records</td>
+                   <td>2006</td>
+               </tr>
+               <tr>
+                   <td>12</td>
+                   <td>Caboladies</td>
+                   <td>Side B</td>
+                   <td>Live Anywhere</td>
+                   <td>Aguirre Records</td>
+                   <td>2010</td>
+               </tr>
+               <tr>
+                   <td>13</td>
+                   <td>Sønntag</td>
+                   <td>Arkham</td>
+                   <td>The Call Of Madonna Luisa Ciccone</td>
+                   <td>A/I/I/P</td>
+                   <td>1988</td>
+               </tr>
+               <tr>
+                   <td>14</td>
+                   <td>Gen Penn : László Moholy-Nagy</td>
+                   <td>Like A Virgin</td>
+                   <td>The Call Of Madonna Luisa Ciccone</td>
+                   <td>A/I/I/P</td>
+                   <td>1988</td>
+               </tr>
+               <tr>
+                   <td>15</td>
+                   <td>Ennio Pellegrini</td>
+                   <td>Cavalcada D'Ottobre</td>
+                   <td>Bolle Nell'Aria</td>
+                   <td>Cam</td>
+                   <td>1979</td>
+               </tr>
+           </table>
+           <br />
+
+       </div>
+
+        <p><strong>2018 04 04</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20180404')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20180404.mp3">External link</a><br />
+                <iframe id="ML_20180404" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Gordon Krieger</td>
+                   <td>Sonata 2-13</td>
+                   <td>Sonatas For Mac Voice 1-26</td>
+                   <td>Falsch</td>
+                   <td>2000</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>UMFANG</td>
+                   <td>Ecstatic Laye</td>
+                   <td>Riffs</td>
+                   <td>1080p</td>
+                   <td>2016</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>UMFANG</td>
+                   <td>Spaces on Spaces</td>
+                   <td>Riffs</td>
+                   <td>1080p</td>
+                   <td>2016</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>UMFANG</td>
+                   <td>Entrada</td>
+                   <td>Riffs</td>
+                   <td>1080p</td>
+                   <td>2016</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Dresvn</td>
+                   <td>Untitled (B2)</td>
+                   <td>Acido 25</td>
+                   <td>Acido Records</td>
+                   <td>2017</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>@c</td>
+                   <td>61 [excerpt]</td>
+                   <td>Up, Down, Charm, Strange, Top, Bottom</td>
+                   <td>Crónica</td>
+                   <td>2008</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Entre Vifs</td>
+                   <td>Concatenation</td>
+                   <td>Mjölnir</td>
+                   <td>Cthulu Records</td>
+                   <td>1990</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Jason Soliday</td>
+                   <td>The Comfort Of Outer Forms</td>
+                   <td>Nonagon Knives</td>
+                   <td>Crippled Intellect Productions</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>Lasse Marhaug</td>
+                   <td>Nine Thousand Things</td>
+                   <td>Tender Wreckage</td>
+                   <td>Gameboy Records</td>
+                   <td>2000</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>Snd</td>
+                   <td>Untitled (B1)</td>
+                   <td>Newtables</td>
+                   <td>snd</td>
+                   <td>1999</td>
+               </tr>
+               <tr>
+                   <td>11</td>
+                   <td>Insync</td>
+                   <td>Jam Tape 1991 Edit 2</td>
+                   <td>The Bedroom Tape Cuts EP</td>
+                   <td>Third Ear Recordings</td>
+                   <td>2014</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2018 03 28</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20180328')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20180328.mp3">External link</a><br />
+                <iframe id="ML_20180328" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Gordon Krieger</td>
+                   <td>Sonata 1</td>
+                   <td>Sonatas For Mac Voice 1-26</td>
+                   <td>Falsch</td>
+                   <td>2000</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Petra Dubach & Mario Van Horrik</td>
+                   <td>Clamps and Hooks #1</td>
+                   <td>Waves</td>
+                   <td>Edition Telemark</td>
+                   <td>2016</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Water Feature</td>
+                   <td>Dream Carpets</td>
+                   <td>Interior Fountains</td>
+                   <td>Mood Hut</td>
+                   <td>2013</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Shinichi Atobe</td>
+                   <td>Free Access Zone 1</td>
+                   <td>Butterfly Effec</td>
+                   <td>DDS</td>
+                   <td>2014</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Shinichi Atobe</td>
+                   <td>Free Access Zone 3</td>
+                   <td>Butterfly Effec</td>
+                   <td>DDS</td>
+                   <td>2014</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Laughing Hands</td>
+                   <td>Five Songs From The Razor Bridge</td>
+                   <td>E E: (The Welder's Bible)</td>
+                   <td>Extreme</td>
+                   <td>1981</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Der Schwarze Kanal</td>
+                   <td>Zuflucht</td>
+                   <td>Live</td>
+                   <td>Koital Kult Product</td>
+                   <td>1983</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Der Schwarze Kanal</td>
+                   <td>Gelb Vielleicht</td>
+                   <td>Live</td>
+                   <td>Koital Kult Product</td>
+                   <td>1983</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>Der Schwarze Kanal</td>
+                   <td>Ohh Ich Hab' Mich So Nach Dir Gesehnt Du Schrecken Der Deutschen Armee!</td>
+                   <td>Live</td>
+                   <td>Koital Kult Product</td>
+                   <td>1983</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>Der Schwarze Kanal</td>
+                   <td>Hack Ab</td>
+                   <td>Live</td>
+                   <td>Koital Kult Product</td>
+                   <td>1983</td>
+               </tr>
+               <tr>
+                   <td>11</td>
+                   <td>Chazev</td>
+                   <td>Katatonia I [excerpt]</td>
+                   <td>Katatonia</td>
+                   <td>ADN</td>
+                   <td>1986</td>
+               </tr> 
+               <tr>
+                   <td>12</td>
+                   <td>Medio Mutante</td>
+                   <td>Uberbeast</td>
+                   <td>Inestable</td>
+                   <td>Cititrax</td>
+                   <td>2008</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2018 03 21</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20180321')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20180321.mp3">External link</a><br />
+                <iframe id="ML_20180321" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Joachim Montessuis</td>
+                   <td>Dronevox DMT Synthesis #1</td>
+                   <td>Vocal Codes</td>
+                   <td>Antifrost</td>
+                   <td>2011</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Henri Chopin</td>
+                   <td>Les Souffles Des Tempêtes</td>
+                   <td>Les Mirifiques Tundras & Compagnie</td>
+                   <td>Alga Marghen</td>
+                   <td>1997</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Mike Ink</td>
+                   <td>Dativ</td>
+                   <td>Rosenkranz</td>
+                   <td>Sähkö Recordings</td>
+                   <td>1994</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Forcefield</td>
+                   <td>Untitled</td>
+                   <td>Lord Of The Rings Modulator</td>
+                   <td>Thunderecorcdrs</td>
+                   <td>2002</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Forcefield</td>
+                   <td>Untitled</td>
+                   <td>Lord Of The Rings Modulator</td>
+                   <td>Thunderecorcdrs</td>
+                   <td>2002</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Goch</td>
+                   <td>Terbium Energy Catalyst (Ill Tariq Remix)</td>
+                   <td>Terbium Energy Catalyst</td>
+                   <td>Quantum Natives</td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Goch</td>
+                   <td>Terbium Energy Catalyst (Brood Ma - Melancholia & Envy Strip)</td>
+                   <td>Terbium Energy Catalyst</td>
+                   <td>Quantum Natives</td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Marc Behrens</td>
+                   <td>A Szellem Álma - MB 3</td>
+                   <td>A Szellem Álma</td>
+                   <td>.Absolute. [Koblenz]</td>
+                   <td>2004</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>Malcriado</td>
+                   <td>Silence I, II, III</td>
+                   <td>Venus</td>
+                   <td>Private Archive</td>
+                   <td>2013</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>The 65D Mavericks</td>
+                   <td>An Experimental Conclusion</td>
+                   <td>Defining The Symptom</td>
+                   <td>Blueprint</td>
+                   <td>2002</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2018 03 14</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20180314')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20180314.mp3">External link</a><br />
+                <iframe id="ML_20180314" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Gatti Giusti Forti & C</td>
+                   <td>La Valle Della Luna</td>
+                   <td>La Valle Della Luna</td>
+                   <td>B&B</td>
+                   <td>1981</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>IOSS</td>
+                   <td>Side B</td>
+                   <td>Corrupted Bellybuster</td>
+                   <td>Midas Music</td>
+                   <td>1988</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Dynamo</td>
+                   <td>23°</td>
+                   <td>23° / 18°</td>
+                   <td>Din</td>
+                   <td>2000</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Dynamo</td>
+                   <td>24°</td>
+                   <td>23° / 18°</td>
+                   <td>Din</td>
+                   <td>2000</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Tolerance</td>
+                   <td>Pulse Static (Tranqillia)</td>
+                   <td>Divin</td>
+                   <td>Vanity Records</td>
+                   <td>1981</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Tolerance</td>
+                   <td>1 F Yuragi</td>
+                   <td>Divin</td>
+                   <td>Vanity Records</td>
+                   <td>1981</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Adopo</td>
+                   <td>Parcheggio</td>
+                   <td>DHL</td>
+                   <td>Atelier Records</td>
+                   <td>2013</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Adopo</td>
+                   <td>DHL</td>
+                   <td>DHL</td>
+                   <td>Atelier Records</td>
+                   <td>2013</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>Pita</td>
+                   <td>Line Angel</td>
+                   <td>Get In</td>
+                   <td>Editions Mego</td>
+                   <td>2016</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>Peter Christopherson</td>
+                   <td>3</td>
+                   <td>Time Machines II</td>
+                   <td>Threshold House</td>
+                   <td>2014</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2018 03 07</strong></p>
+        <div class="cat">
+<!-- 			<p><a class="Link" href="#">[Listen]</a></p> -->
+           <p><i>//subbed by Kelly</i></p>
+           <br />
+       </div>
+
+        <p><strong>2018 02 28</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20180228')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20180228.mp3">External link</a><br />
+                <iframe id="ML_20180228" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Brutum Fulmen</td>
+                   <td>Live At RRRecords</td>
+                   <td>Massachusetts</td>
+                   <td>Gameboy Records</td>
+                   <td>2002</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Negativland</td>
+                   <td>Technology (1987)</td>
+                   <td>Presents Over The Edge Vol. 5: Crosley Bendix - The Radio Reviews</td>
+                   <td>Seeland</td>
+                   <td>1993</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Jason E Anderson</td>
+                   <td>Side A</td>
+                   <td>Truth</td>
+                   <td>Draft</td>
+                   <td>2017</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Günter Schroth</td>
+                   <td>EAN 13 Exklusiv</td>
+                   <td>Barcode Music</td>
+                   <td>Archegon</td>
+                   <td>2000</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Günter Schroth</td>
+                   <td>EAN 13 Ultra</td>
+                   <td>Barcode Music</td>
+                   <td>Archegon</td>
+                   <td>2000</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Günter Schroth</td>
+                   <td>EAN 13 Industrial</td>
+                   <td>Barcode Music</td>
+                   <td>Archegon</td>
+                   <td>2000</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Günter Schroth</td>
+                   <td>Im Scanner Verborgen</td>
+                   <td>Barcode Music</td>
+                   <td>Archegon</td>
+                   <td>2000</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Snd</td>
+                   <td>Locked Groove 1-9</td>
+                   <td>Systems Medley / Planets</td>
+                   <td>City Centre Offices</td>
+                   <td>2000</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2018 02 21</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20180221')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20180221.mp3">External link</a><br />
+                <iframe id="ML_20180221" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Third Door From the Left</td>
+                   <td>Eat The Baby</td>
+                   <td>Live 001 / Live 002</td>
+                   <td>Cause For Concern</td>
+                   <td>1982</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Laundry Room Squelchers</td>
+                   <td>Live at Ende Tymes V</td>
+                   <td></td>
+                   <td></td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Junk & The Beast</td>
+                   <td>The Freedom of Speech</td>
+                   <td>Trailer</td>
+                   <td>Mikroton Recordings</td>
+                   <td>2017</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Francis Dhomont</td>
+                   <td>Objets Retrouvés</td>
+                   <td>Cycle Du Son</td>
+                   <td>Empreintes Digitales</td>
+                   <td>2001</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Various Artistis (Torsten Pröfrock)</td>
+                   <td>No. 8</td>
+                   <td>8 8.5 9</td>
+                   <td>FatCat Records</td>
+                   <td>1997</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Sa Pa</td>
+                   <td>Deya Navigation</td>
+                   <td>風物詩</td>
+                   <td>Forum</td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Ruggero Maggi</td>
+                   <td>Untitled</td>
+                   <td>N D 7</td>
+                   <td>N D</td>
+                   <td>198?</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Portion Reform</td>
+                   <td>Reduction</td>
+                   <td>Accidents In The Workplace</td>
+                   <td>Downwards</td>
+                   <td>1995</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>xname</td>
+                   <td>Field</td>
+                   <td>Meta Gesture Music</td>
+                   <td>Wire Magazine</td>
+                   <td>2017</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>La Sonorité Jaune</td>
+                   <td>Patrick Mc Goohan 1 (Theme)</td>
+                   <td>Ersatia</td>
+                   <td>S.J. Organisation</td>
+                   <td>1987</td>
+               </tr>
+               <tr>
+                   <td>11</td>
+                   <td>La Sonorité Jaune</td>
+                   <td>Patrick Mc Goohan 2 (The Chase)</td>
+                   <td>Ersatia</td>
+                   <td>S.J. Organisation</td>
+                   <td>1987</td>
+               </tr>
+               <tr>
+                   <td>12</td>
+                   <td>La Sonorité Jaune</td>
+                   <td>Patrick Mc Goohan 3 (616 To Inf.)</td>
+                   <td>Ersatia</td>
+                   <td>S.J. Organisation</td>
+                   <td>1987</td>
+               </tr>
+               <tr>
+                   <td>13</td>
+                   <td>Richard H Kirk</td>
+                   <td>Hell In Here</td>
+                   <td>Earlier / Later (Unreleased Projects Anthology 74-89)</td>
+                   <td>The Grey Area, Mute</td>
+                   <td>2004</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2018 02 14</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20180214')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20180214.mp3">External link</a><br />
+                <iframe id="ML_20180214" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Ellen Fullman</td>
+                   <td>Staggered Stasis #1 (Remix Excerpt)</td>
+                   <td>Undying</td>
+                   <td>Freedom In A Vacuum</td>
+                   <td>1989</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Simon Wickham-Smith</td>
+                   <td>Cellules</td>
+                   <td>A Hidden Life And Other Works</td>
+                   <td>Tanuki Records</td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Simon Wickham-Smith</td>
+                   <td>Close</td>
+                   <td>A Hidden Life And Other Works</td>
+                   <td>Tanuki Records</td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Jason Kahn</td>
+                   <td>Vanishing Point</td>
+                   <td>Vanishing Point</td>
+                   <td>23five</td>
+                   <td>2009</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Rosen</td>
+                   <td>Exertion</td>
+                   <td>Misapplications</td>
+                   <td>Conditional</td>
+                   <td>2017</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Stanislav Tolkachev</td>
+                   <td>Blue Mood</td>
+                   <td>Blue Mood</td>
+                   <td>Intergalactic Research Institute For Sound</td>
+                   <td>2018</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2018 02 07</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20180207')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20180207.mp3">External link</a><br />
+                <iframe id="ML_20180207" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Andrew Bernstein</td>
+                   <td>A Boundless Mass Of Transparent Jelly</td>
+                   <td>Cult Appeal</td>
+                   <td>Hausu Mountain</td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Shelley Parker & Paul Purgas</td>
+                   <td>Chance Fracture</td>
+                   <td>Dual Capacity</td>
+                   <td>We Can Elude Control</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Pietro Grossi</td>
+                   <td>Monodia</td>
+                   <td>Computer Music</td>
+                   <td>Two Nuns</td>
+                   <td>1972</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>John Bender</td>
+                   <td>Victims of Victimless Crimes</td>
+                   <td>Memories Of Mindless Mechanical Monologues 1976-1985</td>
+                   <td>Vinyl-on-demand</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>John Bender</td>
+                   <td>Packing List 4</td>
+                   <td>Memories Of Mindless Mechanical Monologues 1976-1985</td>
+                   <td>Vinyl-on-demand</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Alireza Mashayekhi</td>
+                   <td>East-West, Op.45</td>
+                   <td>Persian Electronic Music: Yesterday And Today 1966 - 2006</td>
+                   <td>Sub-Rosa</td>
+                   <td>2007</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>The Kingston Family Singers</td>
+                   <td>02/03/07</td>
+                   <td>Fortitude</td>
+                   <td>MaxCorp</td>
+                   <td>2007</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>154</td>
+                   <td>Apricot</td>
+                   <td>Strike</td>
+                   <td>Delsin</td>
+                   <td>2004</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2018 01 27</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20180127')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20180127.mp3">External link</a><br />
+                <iframe id="ML_20180127" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Raymond Scott</td>
+                   <td>Electronic Audio Logos, Inc.</td>
+                   <td>Manhattan Research Inc.</td>
+                   <td>Basta</td>
+                   <td>2000</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>RM Francis</td>
+                   <td>Side A</td>
+                   <td>Microtopies</td>
+                   <td>Draft</td>
+                   <td>2011</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Edmond De Deyster</td>
+                   <td>Side A</td>
+                   <td>Selectie 02</td>
+                   <td>Ultra Eczema</td>
+                   <td>2008</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Veli-Matti O Äijälä</td>
+                   <td>Raskas Taakka</td>
+                   <td>Raskas Taakka</td>
+                   <td>Vauva</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>La Sonorité Jaune & The Haters</td>
+                   <td>My Dreams Collapse In The Great Landscape</td>
+                   <td>The Interstellar Destroyed Music Mail Project</td>
+                   <td>S.J. Organisation</td>
+                   <td>1987</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Patrick Rutgé</td>
+                   <td>2 Fuite 1, Nuit Des Temps</td>
+                   <td>Collectif Et Cie</td>
+                   <td>Collectif & Cie</td>
+                   <td>1988</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Philippe Moënne-Loccoz</td>
+                   <td>Stokhastes</td>
+                   <td>Collectif Et Cie</td>
+                   <td>Collectif & Cie</td>
+                   <td>1988</td>
+               </tr> 				 
+               <tr>
+                   <td>8</td>
+                   <td>Pierre Schaeffer</td>
+                   <td>Étude Aux Sons Animés</td>
+                   <td>Musique Concrète 1959 N° 2</td>
+                   <td>Bam</td>
+                   <td>1959</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>If, Bwana</td>
+                   <td>Called On God's Carpet</td>
+                   <td>Radio Slaves</td>
+                   <td>Medicinal Tapes</td>
+                   <td>1986</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>Cult Junk Cafe</td>
+                   <td>A Man From North</td>
+                   <td>Cult Junk Cafe</td>
+                   <td>Gentle Giant Records</td>
+                   <td>1996</td>
+               </tr>
+               <tr>
+                   <td>11</td>
+                   <td>David Payne</td>
+                   <td>Side A</td>
+                   <td>Real Too Real</td>
+                   <td>Middle James Co</td>
+                   <td>2011</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2018 01 20</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20180120')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20180120.mp3">External link</a><br />
+                <iframe id="ML_20180120" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Variant</td>
+                   <td>Drifting Waves</td>
+                   <td>Echoes in Space </td>
+                   <td>echospace [detroit]</td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Rose Kallal</td>
+                   <td>Vermillion Vortex (Robert Aiki Aubrey Lowe Remix)</td>
+                   <td>Vermillion Vortex</td>
+                   <td>We Can Elude Control</td>
+                   <td>2011</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Olivia Block</td>
+                   <td>Foramen Magnum</td>
+                   <td>Karren</td>
+                   <td>Sedimental</td>
+                   <td>2013</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>DSCRD</td>
+                   <td>L'Envers Des Clefs II</td>
+                   <td>Discordance EP</td>
+                   <td>Dement3d Records</td>
+                   <td>2011</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>xTAL fSCK</td>
+                   <td>Significant Dimes And Aspirates</td>
+                   <td>Sings Cloninger & Briz</td>
+                   <td>Crank Satori</td>
+                   <td>2016</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Douglas Lilburn</td>
+                   <td>Dance Sequence For Expo '70 (1970)</td>
+                   <td>New Zealand Electronic Music</td>
+                   <td>Kiwi</td>
+                   <td>1975</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Dr. Quinn, Medicine Woman</td>
+                   <td>Untitled (track 1)</td>
+                   <td>Dots And Loops - The Mixtape</td>
+                   <td></td>
+                   <td>2017</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Vladislav Delay</td>
+                   <td>Ele</td>
+                   <td>Ele</td>
+                   <td>Sigma Editions</td>
+                   <td>1999</td>
+               </tr>				 
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2018 01 13</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20180113')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20180113.mp3">External link</a><br />
+                <iframe id="ML_20180113" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>				 
+               <tr>
+                   <td>1</td>
+                   <td>Nocturnal Emissions</td>
+                   <td>Vegetation Narration</td>
+                   <td>The World Is My Womb</td>
+                   <td>Earthly Delights</td>
+                   <td>1987</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Kaiser Nietzsche</td>
+                   <td>Side A</td>
+                   <td>Non Plus Ultra</td>
+                   <td>Freedom In A Vacuum</td>
+                   <td>1989</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Alain Basso</td>
+                   <td>Exocet</td>
+                   <td>Collectif Et Cie</td>
+                   <td>Collectif & Cie</td>
+                   <td>1988</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Empirical Sleeping Consort</td>
+                   <td>I Think I'll Go Eat Worms</td>
+                   <td>I've Got Tears In My Ears From Lying On My Back Catatoning Over You, Dear</td>
+                   <td>Dragnet Records</td>
+                   <td>1993</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Empirical Sleeping Consort</td>
+                   <td>Of Swift Flight</td>
+                   <td>I've Got Tears In My Ears From Lying On My Back Catatoning Over You, Dear</td>
+                   <td>Dragnet Records</td>
+                   <td>1993</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Walt Rockman</td>
+                   <td>Experiment 1</td>
+                   <td>Biology</td>
+                   <td>Sonoton</td>
+                   <td>1980</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Walt Rockman</td>
+                   <td>Experiment 2</td>
+                   <td>Biology</td>
+                   <td>Sonoton</td>
+                   <td>1980</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Rainier Lericolais</td>
+                   <td>B1</td>
+                   <td>End Print</td>
+                   <td>Nostalgie De La Boue</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>Daniel Iglesia</td>
+                   <td>Live at Ende Tymes I</td>
+                   <td></td>
+                   <td></td>
+                   <td>2011</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>Peter J Woods</td>
+                   <td>A Story</td>
+                   <td>Fear</td>
+                   <td>FTAM</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>11</td>
+                   <td>Ropal Jagnu & R. Gellin</td>
+                   <td>Backseat Oncologist</td>
+                   <td>Use The Other Sink</td>
+                   <td>Orb Tapes</td>
+                   <td>2017</td>
+               </tr>
+               <tr>
+                   <td>12</td>
+                   <td>Ropal Jagnu & R. Gellin</td>
+                   <td>Why Can't I Dial It In (Zip Code Problem)</td>
+                   <td>Use The Other Sink</td>
+                   <td>Orb Tapes</td>
+                   <td>2017</td>
+               </tr>
+               <tr>
+                   <td>13</td>
+                   <td>Norbert Möslang</td>
+                   <td>A</td>
+                   <td>Fuzz_Galopp</td>
+                   <td>Bocian Records</td>
+                   <td>2013</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2017 12 30</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20181230')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20181230.mp3">External link</a><br />
+                <iframe id="ML_20181230" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Maeror Tri</td>
+                   <td>(Mind) - Expansion</td>
+                   <td>Mort Aux Vaches</td>
+                   <td>Mort Aux Vaches</td>
+                   <td>1997</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Christopher DeLaurenti</td>
+                   <td>The Old Frontier</td>
+                   <td>Three Camels For Orchestra And Other New And Weird American Music</td>
+                   <td>American Archives Recordings</td>
+                   <td>1995</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Blacklight Braille</td>
+                   <td>Nimue Creates A Spirally Spire Of Glass</td>
+                   <td>The Carmarthen Album</td>
+                   <td>Vetco Records</td>
+                   <td>1988</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>L'Harpiste Sa Muse...</td>
+                   <td>Le Matin Des Magiciens</td>
+                   <td>L'Harpiste Sa Muse...</td>
+                   <td>Eraclit Ge Temm Nnuu Vite (e.g.t.n.v.) Production</td>
+                   <td>1983</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Michel Aubrey & François Giraudon</td>
+                   <td>Parcours 1</td>
+                   <td>Parcours 1, Parcours 2</td>
+                   <td>La Box, Bourges</td>
+                   <td>1998</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Modo Koagon & Fecal Mutilation</td>
+                   <td>Welsh Corgi (W/ Ducks)</td>
+                   <td>Wabi-Sabi</td>
+                   <td>Magic Mother</td>
+                   <td>2013</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Stefan Jaworzyn</td>
+                   <td>Druid Crystals</td>
+                   <td>Drained of Connotation</td>
+                   <td>Blackest Ever Black</td>
+                   <td>2014</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Kurt Liedwart</td>
+                   <td>Tonene</td>
+                   <td>Tone</td>
+                   <td>Mikroton Recordings</td>
+                   <td>2017</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>Ed Herrmann</td>
+                   <td>A Call To Charms</td>
+                   <td>Still Life In Concrete</td>
+                   <td>Garuda Records</td>
+                   <td>1987</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>Ed Herrmann</td>
+                   <td>Still Life In Concrete</td>
+                   <td>Still Life In Concrete</td>
+                   <td>Garuda Records</td>
+                   <td>1987</td>
+               </tr>
+               <tr>
+                   <td>11</td>
+                   <td>Martins Rokis</td>
+                   <td>[] MCTS_part1</td>
+                   <td>[][][][][][] / Patiño Patat</td>
+                   <td>[duh-noh]</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>12</td>
+                   <td>Martins Rokis</td>
+                   <td>[][] MCTS_part2</td>
+                   <td>[][][][][][] / Patiño Patat</td>
+                   <td>[duh-noh]</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>13</td>
+                   <td>Martins Rokis</td>
+                   <td>[][][] 3-D acid</td>
+                   <td>[][][][][][] / Patiño Patat</td>
+                   <td>[duh-noh]</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>14</td>
+                   <td>Martins Rokis</td>
+                   <td>[][][][] ???</td>
+                   <td>[][][][][][] / Patiño Patat</td>
+                   <td>[duh-noh]</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>15</td>
+                   <td>Martins Rokis</td>
+                   <td>[][][][][] L -10.44 dB (30.04%) R -10.29 dB (30.56%)</td>
+                   <td>[][][][][][] / Patiño Patat</td>
+                   <td>[duh-noh]</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>16</td>
+                   <td>Martins Rokis</td>
+                   <td>[][][][][][] precx5</td>
+                   <td>[][][][][][] / Patiño Patat</td>
+                   <td>[duh-noh]</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>17</td>
+                   <td>Asmus Tietchens</td>
+                   <td>Sehr Ernste Musik</td>
+                   <td>Fast Ohne Titel, Korrosion</td>
+                   <td>Black Rose Recordings</td>
+                   <td>2013</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2017 12 23</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20181223')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20181223.mp3">External link</a><br />
+                <iframe id="ML_20181223" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td> 	 	 	 	
+                   <td>MØHR</td>
+                   <td>Deutschland</td>
+                   <td>The Endless Fight</td>
+                   <td>ZNS Tapes</td>
+                   <td></td>
+               </tr>
+               <tr>
+                   <td>2</td> 	 	 	
+                   <td>Sergei Tcherepnin</td>
+                   <td>Quasar (Death)</td>
+                   <td>Quasar < => Lanterns</td>
+                   <td>ISSUE Project Room</td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>3</td> 	 	 	
+                   <td>dba.</td>
+                   <td>Business as Usual...</td>
+                   <td>Business as Usual...</td>
+                   <td>Eva-Tone Soundsheets</td>
+                   <td></td>
+               </tr>
+               <tr>
+                   <td>4</td> 	 	 	
+                   <td>Kplr</td>
+                   <td>2</td>
+                   <td>Voltaic Fits</td>
+                   <td>Draft</td>
+                   <td>2010</td>
+               </tr>
+               <tr>
+                   <td>5</td> 	 	 	 	
+                   <td>Unknown Artist</td>
+                   <td>Untitled</td>
+                   <td>Tension Music Volume II</td>
+                   <td>Tension Records</td>
+                   <td>1995</td>
+               </tr>
+               <tr>
+                   <td>6</td> 	 	 	
+                   <td>Pacific 231</td>
+                   <td>Live Albi</td>
+                   <td>L'Enfer Est Intime - Volume 0</td>
+                   <td>Le Syndicat, VP 231</td>
+                   <td>1985</td>
+               </tr>
+               <tr>
+                   <td>7</td> 	 	 	
+                   <td>S English</td>
+                   <td>Untitled (Yokai)</td>
+                   <td>Fugitive</td>
+                   <td>Desire Records</td>
+                   <td>2013</td>
+               </tr>
+               <tr>
+                   <td>8</td>	 	 	
+                   <td>Solid Eye</td>
+                   <td>Live At WFMU September 13, 1998</td>
+                   <td>California</td>
+                   <td>Troniks, Ground Fault Recordings, RRRecords</td>
+                   <td>2006</td>
+               </tr>
+               <tr>
+                   <td>9</td> 		 	 	
+                   <td>Tom Richards</td>
+                   <td>The Timeless Allure of TTL</td>
+                   <td>Broken Patchbay</td>
+                   <td>We Can Elude Control</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>10</td> 	 	 	 	
+                   <td>Helena Gough</td>
+                   <td>Sift</td>
+                   <td>With What Remains</td>
+                   <td>Entr'acte</td>
+                   <td>2007</td>
+               </tr>
+               <tr>
+                   <td>11</td>
+                   <td>Juice Machine</td>
+                   <td>Desanm 2</td>
+                   <td>Desanm ak Janvye</td>
+                   <td>Self-Released</td>
+                   <td>2017</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2017 12 16</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20181216')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20181216.mp3">External link</a><br />
+                <iframe id="ML_20181216" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Eric Boros</td>
+                   <td>Noise Wakame</td>
+                   <td>Noggin / Eric Boros / Crank Sturgeon And Id M Theft Able</td>
+                   <td>Manufracture</td>
+                   <td>2006</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Gay Shapes</td>
+                   <td>Untitled (side A)</td>
+                   <td>Untitled (MOSS 006)</td>
+                   <td>Moss Archive</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Joe Gilmore</td>
+                   <td>U+221E</td>
+                   <td>On Quasi-Convergence And Quiet Spaces</td>
+                   <td>Cut</td>
+                   <td>2007</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Capricorni Pneumatici</td>
+                   <td>A-Phyi II</td>
+                   <td>n.d.d.d.p.</td>
+                   <td>666 Production</td>
+                   <td>1987</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>MFH</td>
+                   <td>Behind the Darkest Clouds</td>
+                   <td>Gound Zero</td>
+                   <td>YHR Tapes</td>
+                   <td>1981</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Pork Queen</td>
+                   <td>Electra-Glide</td>
+                   <td>Killing Ha Muerto...Cuantas Veces?</td>
+                   <td>Climax Records</td>
+                   <td>1995</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Marcia Bassett & Jenny Gräf</td>
+                   <td>Phantasmagorical Mapping</td>
+                   <td>Peradam</td>
+                   <td>Utech Records</td>
+                   <td>2010</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Farmers Manual</td>
+                   <td>363</td>
+                   <td>Fsck</td>
+                   <td>Tray</td>
+                   <td>1997</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>Farmers Manual</td>
+                   <td>364</td>
+                   <td>Fsck</td>
+                   <td>Tray</td>
+                   <td>1997</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>Farmers Manual</td>
+                   <td>365</td>
+                   <td>Fsck</td>
+                   <td>Tray</td>
+                   <td>1997</td>
+               </tr>
+               <tr>
+                   <td>11</td>
+                   <td>Farmers Manual</td>
+                   <td>366</td>
+                   <td>Fsck</td>
+                   <td>Tray</td>
+                   <td>1997</td>
+               </tr>
+               <tr>
+                   <td>12</td>
+                   <td>Phil Julian</td>
+                   <td>Hope And Anchor, 19/04/2012</td>
+                   <td>Live Flux</td>
+                   <td>The Tapeworm</td>
+                   <td>2013</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2017 12 09</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20181209')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20181209.mp3">External link</a><br />
+                <iframe id="ML_20181209" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Carbon Sink</td>
+                   <td>Krypton</td>
+                   <td>Shed Light On The Origins</td>
+                   <td>Entrefer</td>
+                   <td>2016</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Evil Moisture</td>
+                   <td>Rea End Retro</td>
+                   <td>Kiling Ha Muerto...Cuantas Veces?</td>
+                   <td>Climax Records</td>
+                   <td>1995</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Cranioclast</td>
+                   <td>Name Torture</td>
+                   <td>Nature Morte</td>
+                   <td>E'ostrate</td>
+                   <td>1991</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Maria Zerfall</td>
+                   <td>Wohin</td>
+                   <td>Sammlung - Elektronische Kassettenmusik, Düsseldorf 1982 - 1989</td>
+                   <td>Bureau B</td>
+                   <td>2017</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Vertonen</td>
+                   <td>Soma Trio Study (#2)</td>
+                   <td>The Ocean Is Gone, The Ship Is Next</td>
+                   <td>Ground Fault Recordings</td>
+                   <td>2003</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Barry Truax</td>
+                   <td>Solar Eclipse</td>
+                   <td>Sequence Of Earlier Heaven: Electroacoustic And Computer Music</td>
+                   <td>Cambridge Street Records</td>
+                   <td>1985</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>David Keane</td>
+                   <td>La Aurora Estrellada</td>
+                   <td>Aurora</td>
+                   <td>Cambridge Street Records</td>
+                   <td>1985</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Kplr</td>
+                   <td>Mechanical Mind Space</td>
+                   <td>Mechanical Mind Space b/w Mechanical Motion Simulator</td>
+                   <td>Prairie Fire</td>
+                   <td>2011</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>Marcia Bassett & Jenny Gräf</td>
+                   <td>Zero As Sky</td>
+                   <td>Peradam</td>
+                   <td>Utech Records</td>
+                   <td>2010</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>Gruppo di Improvvisazione Nuova Consonanza</td>
+                   <td>Eflot</td>
+                   <td>1967-1975</td>
+                   <td>Edition RZ</td>
+                   <td>1992</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2017 11 25</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20181125')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20181125.mp3">External link</a><br />
+                <iframe id="ML_20181125" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">	
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Mickey O'Hara</td>
+                   <td>Side A</td>
+                   <td>Brux</td>
+                   <td>Ayurvedic Tapes</td>
+                   <td>2015</td>
+               </tr>	
+               <tr>
+                   <td>2</td>
+                   <td>Lary 7</td>
+                   <td>Side A</td>
+                   <td>End of An Era</td>
+                   <td>Fylkingen Records</td>
+                   <td>2016</td>
+               </tr>	
+               <tr>
+                   <td>3</td>
+                   <td>Ami Yoshida</td>
+                   <td>Vanishing Point</td>
+                   <td>Spiritual Voice</td>
+                   <td>1040</td>
+                   <td>1997</td>
+               </tr>	
+               <tr>
+                   <td>4</td>
+                   <td>Eduardo Polonio</td>
+                   <td>Batka</td>
+                   <td>Acaricia La Mañana</td>
+                   <td>UM</td>
+                   <td>1984</td>
+               </tr>	
+               <tr>
+                   <td>5</td>
+                   <td>Eduardo Polonio</td>
+                   <td>Tiento</td>
+                   <td>Acaricia La Mañana</td>
+                   <td>UM</td>
+                   <td>1984</td>
+               </tr>	
+               <tr>
+                   <td>6</td>
+                   <td>Eduardo Polonio</td>
+                   <td>Paso A Dos</td>
+                   <td>Acaricia La Mañana</td>
+                   <td>UM</td>
+                   <td>1984</td>
+               </tr>	
+               <tr>
+                   <td>7</td>
+                   <td>dba.</td>
+                   <td>Last Call at the Counting-house</td>
+                   <td>Business as Usual...</td>
+                   <td>Eva-Tone Soundsheets</td>
+                   <td></td>
+               </tr>	
+               <tr>
+                   <td>8</td> 	 		 	
+                   <td>The Birds</td>
+                   <td>Uuhm</td>
+                   <td>Untitled</td>
+                   <td>Pal SL</td>
+                   <td>1998</td>
+               </tr>	
+               <tr>
+                   <td>9</td>
+                   <td>The Birds</td>
+                   <td>Slipmouth</td>
+                   <td>Untitled</td>
+                   <td>Pal SL</td>
+                   <td>1998</td>
+               </tr>	
+               <tr>
+                   <td>10</td>
+                   <td>The Birds</td>
+                   <td>Jennifer has Several Wigs for her Pussy</td>
+                   <td>Untitled</td>
+                   <td>Pal SL</td>
+                   <td>1998</td>
+               </tr>	
+               <tr>
+                   <td>11</td>
+                   <td>Dynamo Dreesen / Polynomial</td>
+                   <td>Gekløde</td>
+                   <td>Untitled</td>
+                   <td>Acido Records</td>
+                   <td>2005</td>
+               </tr>	
+               <tr>
+                   <td>12</td>
+                   <td>Benoît and the Mandelbrots</td>
+                   <td>Gurke</td>
+                   <td>Benoît and the Mandelbrots</td>
+                   <td>Syff</td>
+                   <td>2016</td>
+               </tr>	
+               <tr>
+                   <td>13</td>
+                   <td>Benoît and the Mandelbrots</td>
+                   <td>Guritchi/That Did It</td>
+                   <td>Benoît and the Mandelbrots</td>
+                   <td>Syff</td>
+                   <td>2016</td>
+               </tr>	
+               <tr>
+                   <td>14</td>
+                   <td>Sima Kim</td>
+                   <td>A Thin Layer of Ice Upon A Deep Ocean of Chaos</td>
+                   <td>Ecology of Sound</td>
+                   <td>Self-Released</td>
+                   <td>2016</td>
+               </tr>		 
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2017 11 18</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20181118')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20181118.mp3">External link</a><br />
+                <iframe id="ML_20181118" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">	
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>			 
+               <tr>
+                   <td>1</td>
+                   <td>Sabisha Friedberg & Peter Edwards</td>
+                   <td>Hant Variance Movement 2, Pt 2</td>
+                   <td>The Hant Variance</td>
+                   <td>ISSUE Project Room</td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>NYZ</td>
+                   <td>ISR_16x16_WCM</td>
+                   <td>DRN4</td>
+                   <td>MEDS</td>
+                   <td>2016</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Busen</td>
+                   <td>Totti</td>
+                   <td>Busen</td>
+                   <td>General Elektro</td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Busen</td>
+                   <td>Elektrocity</td>
+                   <td>Busen</td>
+                   <td>General Elektro</td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Lee Gamble & Bryan Lewis Saunders</td>
+                   <td>Identity Technology</td>
+                   <td>Stream of Unconscious, Vol 8</td>
+                   <td>Stand Up Tragedy</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>www.jz-arkh.co.uk (James Zeiter)</td>
+                   <td>js_orch [excerpt]</td>
+                   <td>ddrhodes / js_orch</td>
+                   <td>www.jz-arkh.co.uk</td>
+                   <td>2001</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Mark Fell & Gábor Lázár</td>
+                   <td>Track 10</td>
+                   <td>The Neurobiology Of Moral Decision Making</td>
+                   <td>The Death of Rave</td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Jean-Claude Eloy</td>
+                   <td>Tokyo [excerpt]</td>
+                   <td>Gaku-No-Michi (Les Voies De La Musique)</td>
+                   <td>Disques Adès</td>
+                   <td>1979</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>Basic Channel</td>
+                   <td>Mutism</td>
+                   <td>BCD</td>
+                   <td>Basic Channel</td>
+                   <td>1995</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>Dopplereffekt</td>
+                   <td>Niobium Resonators [excerpt]</td>
+                   <td>Linear Accelerator</td>
+                   <td>International Deejay Gigolo Records</td>
+                   <td>2003</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2017 11 11</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20181111')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20181111.mp3">External link</a><br />
+                <iframe id="ML_20181111" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">	
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>			 
+               <tr>
+                   <td>1</td>
+                   <td>Vitamin B12 </td>
+                   <td>Euphonious Murmur Blend</td>
+                   <td>Other Worlds</td>
+                   <td>Qbico</td>
+                   <td>2004</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Justin Marc Lloyd</td>
+                   <td>Core Dump 0000000000000000000000000001</td>
+                   <td>Core Dump Diaries, Vol 1 & 2</td>
+                   <td>Rainbow Bridge</td>
+                   <td>2014</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Jarvi Koho & Ilpo Numminen</td>
+                   <td>Kuulokulmat 1</td>
+                   <td>Vuosi 100</td>
+                   <td>Vuosi</td>
+                   <td>2016</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Jarvi Koho & Ilpo Numminen</td>
+                   <td>Kuulokulmat 2</td>
+                   <td>Vuosi 100</td>
+                   <td>Vuosi</td>
+                   <td>2016</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Andrew Pekler</td>
+                   <td>The Prepaid Piano</td>
+                   <td>The Prepaid Piano & Re-played</td>
+                   <td>Entr'acte</td>
+                   <td>2014</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Bob Bellerue</td>
+                   <td>Visceral Communication, side A</td>
+                   <td>Visceral Communication</td>
+                   <td>Sleepy Hollow Editions</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Region 5</td>
+                   <td>Death Zone</td>
+                   <td>Dietro Il Silenzio</td>
+                   <td>Säbel</td>
+                   <td>1984</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Region 5</td>
+                   <td>Ssai</td>
+                   <td>Dietro Il Silenzio</td>
+                   <td>Säbel</td>
+                   <td>1984</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>Region 5</td>
+                   <td>Ground Zero</td>
+                   <td>Dietro Il Silenzio</td>
+                   <td>Säbel</td>
+                   <td>1984</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>The Automatics Group</td>
+                   <td>Deadmau5/Mason vs Princess Superstar/Riva Starr/Sash!/Motorcycle/4 Strings/PPK/D.H.T./Tiesto</td>
+                   <td>Summer Mix</td>
+                   <td>Entr'acte</td>
+                   <td>2011</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2017 11 04</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20181104')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20181104.mp3">External link</a><br />
+                <iframe id="ML_20181104" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">			 
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Big City Orchestra</td>
+                   <td>Mimikri</td>
+                   <td>Bovine Spongiform Encephalopathy</td>
+                   <td>Fool's Paradise</td>
+                   <td>1994</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Joe Colley</td>
+                   <td>Anthem: Static for Empty Life</td>
+                   <td>Anthem (Static For Empty Life)</td>
+                   <td>Crippled Intellect Productions</td>
+                   <td>2002</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>David Payne</td>
+                   <td>Untitled</td>
+                   <td>Feedback 53</td>
+                   <td>Middle James Co</td>
+                   <td>2009</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Burden of Friendship</td>
+                   <td>Excerpt from "The Copulation of Church + State"</td>
+                   <td>La Chair Entre Les Lignes</td>
+                   <td>Les Ballets Mécaniques</td>
+                   <td>1988</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>PCRV & Vertonen</td>
+                   <td>IV</td>
+                   <td>Deep Time</td>
+                   <td>Power Silence</td>
+                   <td>2009</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Erkki Kurenniemi</td>
+                   <td>Antropoidien Tanssi</td>
+                   <td>Äänityksiä / Recordings 1963-1973</td>
+                   <td>Love Records</td>
+                   <td>2002</td>
+               </tr>			 
+               <tr>
+                   <td>7</td>
+                   <td>Tom Richards</td>
+                   <td>Broken Patchbay</td>
+                   <td>Broken Patchbay</td>
+                   <td>We Can Elude Control</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Florian Hecker</td>
+                   <td>Jxean-Z Character Generator</td>
+                   <td>Sun Pandämonium</td>
+                   <td>Mego</td>
+                   <td>2003</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>Neglige - Electronic Underwear</td>
+                   <td>Dreinklang</td>
+                   <td>Point of Yucca, Vol 1</td>
+                   <td>Yucca Tree Records</td>
+                   <td>1993</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>Renick Bell</td>
+                   <td>Live coding screencast test in an experimental drum and bass algorave style, Dec. 9, 2014</td>
+                   <td>N/A</td>
+                   <td>Self-Released</td>
+                   <td>2014</td>
+               </tr>
+               <tr>
+                   <td>11</td>
+                   <td>Outer Space</td>
+                   <td>Removing A Hex</td>
+                   <td>Outer Space</td>
+                   <td>Arbor</td>
+                   <td>2010</td>
+               </tr>
+               <tr>
+                   <td>12</td>
+                   <td>Wanda Group</td>
+                   <td>Constantly White</td>
+                   <td>Get Involved In My Throat</td>
+                   <td>Umbro G</td>
+                   <td>2012</td>
+               </tr>
+               <tr>
+                   <td>13</td>
+                   <td>Hanno Leichtmann</td>
+                   <td>Light</td>
+                   <td>Unfinished Portrait of Youth Today</td>
+                   <td>The Tapeworm</td>
+                   <td>2013</td>
+               </tr>
+               <tr>
+                   <td>14</td>
+                   <td>Hanno Leichtmann</td>
+                   <td>End</td>
+                   <td>Unfinished Portrait of Youth Today</td>
+                   <td>The Tapeworm</td>
+                   <td>2013</td>
+               </tr>
+           </table>
+           <br />
+       </div>
+
+        <p><strong>2017 10 28</strong></p>
+        <div class="cat">
+           <p><span class="subItem1">Listen: </span><button class="Link" onclick="embedToggle('ML_20181028')">Toggle embed</button><span class="subItem1"> | </span><a class="Link" href="https://archive.org/details/machineLanguage/ML_20181028.mp3">External link</a><br />
+                <iframe id="ML_20181028" style="display:none" width="100%" height="35" frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen></iframe>
+           </p>
+           <table border="1" style="text-align: left;">
+               <tr>
+                   <td><span class="subItem1"><i>#</i></span></td>
+                   <td><span class="subItem1"><i>Artist</i></span></td>
+                   <td><span class="subItem1"><i>Track</i></span></td>
+                   <td><span class="subItem1"><i>Release</i></span></td>
+                   <td><span class="subItem1"><i>Label</i></span></td>
+                   <td><span class="subItem1"><i>Release Date</i></span></td>
+               </tr>
+               <tr>
+                   <td>1</td>
+                   <td>Discotheque Grönland</td>
+                   <td>Lubak</td>
+                   <td>Split Your Ears</td>
+                   <td>Stillstand</td>
+                   <td>2002</td>
+               </tr>
+               <tr>
+                   <td>2</td>
+                   <td>Robert Beatty</td>
+                   <td>Untitled (Pink Dot)</td>
+                   <td>Soundtracks For Takeshi Murata</td>
+                   <td>Glistening Examples</td>
+                   <td>2013</td>
+               </tr>
+               <tr>
+                   <td>3</td>
+                   <td>Empirical Sleeping Consort</td>
+                   <td>Erosion</td>
+                   <td>Layers of Awakening</td>
+                   <td>Kronotop</td>
+                   <td>1994</td>
+               </tr>
+               <tr>
+                   <td>4</td>
+                   <td>Eric Lunde</td>
+                   <td>000406_0019</td>
+                   <td>Animal Mineral Self Mirror</td>
+                   <td>Crippled Intellect Productions</td>
+                   <td>2011</td>
+               </tr>
+               <tr>
+                   <td>5</td>
+                   <td>Elemnt</td>
+                   <td>Water #4</td>
+                   <td>Water</td>
+                   <td>Hidden Hawaii</td>
+                   <td>2016</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Aube</td>
+                   <td>Rot</td>
+                   <td>Blau+Rot</td>
+                   <td>Auf Abwegen</td>
+                   <td>2007</td>
+               </tr>
+               <tr>
+                   <td>6</td>
+                   <td>Kaiser Nietzsche</td>
+                   <td>Signal to Noise Ratio</td>
+                   <td>Signal to Noise Ratio</td>
+                   <td>Freedom In A Vacuum</td>
+                   <td>1988</td>
+               </tr>
+               <tr>
+                   <td>7</td>
+                   <td>Ross 154</td>
+                   <td>Hybrids II</td>
+                   <td>Fragments</td>
+                   <td>Eevo Lute Muzique</td>
+                   <td>1993</td>
+               </tr>
+               <tr>
+                   <td>8</td>
+                   <td>Capricorni Pneumatici</td>
+                   <td>880 Khz - 1:20 am</td>
+                   <td>n.d.d.d.p.</td>
+                   <td>666 Production</td>
+                   <td>1987</td>
+               </tr>
+               <tr>
+                   <td>9</td>
+                   <td>Surgeon</td>
+                   <td>Intro</td>
+                   <td>Basictonalvocabulary</td>
+                   <td>Tresor</td>
+                   <td>1997</td>
+               </tr>
+               <tr>
+                   <td>10</td>
+                   <td>Richard H. Kirk</td>
+                   <td>Cosmic Override 2</td>
+                   <td>Earlier / Later (Unreleased Projects Anthology 74-89)</td>
+                   <td>The Grey Area, Mute</td>
+                   <td>2004</td>
+               </tr>
+               <tr>
+                   <td>11</td>
+                   <td>Die Form</td>
+                   <td>Red Magic</td>
+                   <td>Sex & Bestiality</td>
+                   <td>Bain Total</td>
+                   <td>1984</td>
+               </tr>
+               <tr>
+                   <td>12</td>
+                   <td>Jason Lescalleet</td>
+                   <td>None of these Days</td>
+                   <td>This is What I Do, Vol 4</td>
+                   <td>Glistening Examples</td>
+                   <td>2014</td>
+               </tr>
+               <tr>
+                   <td>13</td>
+                   <td>Electrocore</td>
+                   <td>CAUS#3 (Citizen Against UFO Secrecy #3)</td>
+                   <td>Pekak! Indonesian Noise 1995​-​2015: 20 Years of Experimental Music from Indonesia</td>
+                   <td>End of the Alphabet Records</td>
+                   <td>2015</td>
+               </tr>
+               <tr>
+                   <td>14</td>
+                   <td>John Bender</td>
+                   <td>It’s Something to Do</td>
+                   <td>Memories Of Mindless Mechanical Monologues 1976-1985</td>
+                   <td>Vinyl-on-demand</td>
+                   <td>2012</td>
+               </tr>
+           </table>
+           <br />
+           <br />
+       </div>
+       <hr>
+     </div> <!-- end id="main" -->
+     <footer>
+       <div id="left">
+           <div id="imgContainer">
+               <a href="http://p-am.cc"><img class="disableSmoothing" src="nameLogoSm.gif"></a>
+           </div>
+           <div id="imgContainer2">
+               <a href="http://47093290874823910748903728906756.tumblr.com/"><img src="pill.gif"></a>
+           </div>
+       </div>
+       <div id="right">
+           <div id="rightText">
+               <p>faceModel.obj by <a href="https://www.blendswap.com/blends/view/69585">danikreuter</a><br />
+                   pill.gif by ???<br />
+               &#9400; p-am.cc<br /></p>
+           </div>
+           <div id="rightPic">
+               <img src="qr.gif">
+           </div>
+       </div>
+   </footer>
+</body>
+</html>
