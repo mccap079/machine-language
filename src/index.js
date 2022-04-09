@@ -2,6 +2,9 @@ import * as THREE from 'three';
 
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
+import green_vert from "./green-vert.js";
+import green_frag from "./green-frag.js";
+
 let container;
 
 let camera, scene, renderer;
@@ -9,16 +12,15 @@ let camera, scene, renderer;
 let time;
 let mouseX = 0, mouseY = 0;
 
-let windowHalfX = window.innerWidth / 2;
-let windowHalfY = window.innerHeight / 2;
+var width = window.innerHeight;
+var height = window.innerHeight;
 
 let headObj;
+let headScale = 25;
 
 var light = new THREE.AmbientLight(0xDDDDDD, 0.8); // make head white
 var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 directionalLight.castShadow = true;
-var colorPick = 0;
-var rmapped = 0;
 var scaleSpeed = getRandomIntInclusive(0.01, 1);
 
 init();
@@ -34,8 +36,9 @@ function init() {
 
     scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 2000);;
-    camera.position.z = 10;
+    // camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 2000);
+    camera = new THREE.OrthographicCamera(width / -2, width / 2, height / 2, height / -2, 1, 1000);
+    camera.position.z = 100;
     camera.lookAt( scene.position );
     scene.add( camera );
     
@@ -43,14 +46,12 @@ function init() {
     scene.add(directionalLight);
     scene.add(light);
     
-
     // manager
 
     function loadModel() {
 
         headObj.traverse( function ( child ) {
 
-            //if ( child.isMesh ) child.material.map = texture;
             if ( child.isMesh ) child.material = new THREE.MeshBasicMaterial({color: 0xFF0000}); 
 
         } );
@@ -60,11 +61,6 @@ function init() {
     }
 
     const manager = new THREE.LoadingManager( loadModel );
-
-    // texture
-
-    // const textureLoader = new THREE.TextureLoader( manager );
-    // const texture = textureLoader.load( 'textures/uv_grid_opengl.jpg' );
 
     // model
 
@@ -84,10 +80,25 @@ function init() {
     loader.load( 'FaceModel.obj', function ( obj ) {
 
         headObj = obj;
+        headObj.scale.set(headScale,headScale,headScale);
         console.log("headObj.scale.xyz = " + headObj.scale.x + ", " + headObj.scale.y + ", " + headObj.scale.z);
     }, onProgress, onError );
 
-    //
+    // Circle
+
+    const geometry = new THREE.BoxGeometry( 500, 500, 1 );
+    const material = new THREE.ShaderMaterial( {
+        color: 0x00ff00,
+        uniforms:{
+            u_time: { value: 1.0 },
+            u_width: { value: width },
+            u_height: { value: height },
+        },
+        vertexShader: green_vert,
+	    fragmentShader: green_frag
+    } );
+    const cube = new THREE.Mesh( geometry, material );
+    scene.add( cube );
 
     renderer = new THREE.WebGLRenderer({alpha: true});
     renderer.setPixelRatio( window.devicePixelRatio );
@@ -113,8 +124,11 @@ function init() {
 
 function onWindowResize() {
 
-    windowHalfX = window.innerWidth / 2;
-    windowHalfY = window.innerHeight / 2;
+    width = window.innerWidth;
+    height = window.innerHeight;
+
+    cube.material.uniforms.u_width.value = width;
+    cube.material.uniforms.u_height.value = height;
 
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -152,7 +166,7 @@ function scaleAction() {
         if (scaleSpeed < 0.02) {
             scaleSpeed = 0.02;
         }
-        headObj.scale.set(1, 1, 1);
+        headObj.scale.set(headScale, headScale, headScale);
         //camera.position.x = getRandomIntInclusive(-50, 50);
     }
     headObj.rotation.y += time * Math.PI / 180
