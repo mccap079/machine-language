@@ -8,14 +8,18 @@ import green_frag from "./green-frag.js";
 let container;
 let cube; 
 let cubeBoundingBox;
+let boxSz;
 
 let camera, scene, renderer;
 
 let time;
 let mouseX = 0, mouseY = 0;
 
-var width = window.innerHeight;
+var width = document.documentElement.clientWidth;
 var height = window.innerHeight;
+
+console.log("INNER WIDTH = " + window.innerWidth);
+console.log("CLIENT WIDTH = " + document.documentElement.clientWidth);
 
 let headObj;
 let headScale = 25;
@@ -24,6 +28,8 @@ var light = new THREE.AmbientLight(0xDDDDDD, 0.8); // make head white
 var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 directionalLight.castShadow = true;
 var scaleSpeed = getRandomIntInclusive(0.01, 1);
+
+let renderTarget = new THREE.WebGLRenderTarget( width, height, { format: THREE.RGBFormat } );
 
 init();
 animate();
@@ -38,7 +44,7 @@ function init() {
 
     scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 2000);
+    camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 2000);
     //camera = new THREE.OrthographicCamera(width / -2, width / 2, height / 2, height / -2, 1, 1000);
     camera.position.z = 100;
     camera.lookAt( scene.position );
@@ -54,11 +60,11 @@ function init() {
 
         headObj.traverse( function ( child ) {
 
-            if ( child.isMesh ) child.material = new THREE.MeshBasicMaterial({color: 0xFF0000}); 
+            if ( child.isMesh ) child.material = new THREE.MeshBasicMaterial({color: 0x0000ff}); 
 
         } );
 
-        // scene.add( headObj );
+        scene.add( headObj );
 
     }
 
@@ -119,56 +125,17 @@ function init() {
     // btmRight_px.x = map(btmRight_projection.x, -1, 1, 0, window.innerWidth);
     // btmRight_px.y = map(btmRight_projection.y, -1, 1, 0, window.innerHeight);
 
-    // Set top left and btm right px based on current window size
-    let cw = window.innerWidth/2;
-    let ch = window.innerHeight/2;
-    let new_topLeft_px = new THREE.Vector2(cw-150, ch-150);
-    let new_btmRight_px = new THREE.Vector2(cw+150, ch+150);
-
-    // Set normalized vals (conver to NDC)
-    let new_topLeft_ndc = new THREE.Vector3(0,0,0.5);
-    new_topLeft_ndc.x = map(new_topLeft_px.x, 0, window.innerWidth, -1, 1);
-    new_topLeft_ndc.y = map(new_topLeft_px.y, 0, window.innerHeight, 1, -1);
-    let new_btmRight_ndc = new THREE.Vector3(0,0,0.5);
-    new_btmRight_ndc.x = map(new_btmRight_px.x, 0, window.innerWidth, -1, 1);
-    new_btmRight_ndc.y = map(new_btmRight_px.y, 0, window.innerHeight, 1, -1);
-
-    console.log("new_topLeft_ndc = " + new_topLeft_ndc.x + ", " + new_topLeft_ndc.y);
-    console.log("new_btmRight_ndc = " + new_btmRight_ndc.x + ", " + new_btmRight_ndc.y);
-    ///CORRECT
-
-    // Cast ray to go from NDC -> world space coords
-    let new_topLeft_world = new THREE.Vector3();
-    new_topLeft_ndc.unproject(camera);
-    new_topLeft_ndc.sub( camera.position ).normalize();
-    var distance = - camera.position.z / new_topLeft_ndc.z;
-    new_topLeft_world.copy( camera.position ).add( new_topLeft_ndc.multiplyScalar( distance ) );
-
-    let new_btmRight_world = new THREE.Vector3();
-    new_btmRight_ndc.unproject(camera);
-    new_btmRight_ndc.sub( camera.position ).normalize();
-    var distance = - camera.position.z / new_btmRight_ndc.z;
-    new_btmRight_world.copy( camera.position ).add( new_btmRight_ndc.multiplyScalar( distance ) );
-
-    console.log("new_topLeft_world = " + new_topLeft_world.x + ", " + new_topLeft_world.y);
-    console.log("new_btmRight_world = " + new_btmRight_world.x + ", " + new_btmRight_world.y);
-    /// SEEMS WRONG
-
-    // Calc box width and height
-    let boxWidth = new_btmRight_world.x - new_topLeft_world.x;
-    let boxHeight = new_topLeft_world.y - new_btmRight_world.y;
-    console.log("boxWidth = " + boxWidth);
-    console.log("boxHeight = " + boxHeight);
-
+    boxSz = setBoxSize();
+    
     // Circle
 
-    const geometry = new THREE.BoxGeometry( boxWidth, boxHeight, 1 );
+    const geometry = new THREE.BoxGeometry( boxSz.x, boxSz.y, 1 );
     const material = new THREE.ShaderMaterial( {
-        color: 0x00ff00,
         uniforms:{
             u_time: { value: 1.0 },
-            u_width: { value: boxWidth },
-            u_height: { value: boxHeight },
+            u_width: { value: boxSz.x },
+            u_height: { value: boxSz.y },
+            u_texture: { value: renderTarget.texture }
         },
         vertexShader: green_vert,
 	    fragmentShader: green_frag
@@ -178,9 +145,11 @@ function init() {
 
     /// Renderer
 
-    renderer = new THREE.WebGLRenderer({alpha: true});
+    // renderer = new THREE.WebGLRenderer({alpha:true});
+    renderer = new THREE.WebGLRenderer({});
+    renderer.setClearColor(0xff0000);
     renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize( width, height );
     //container.appendChild( renderer.domElement );
     threejs_canvas.appendChild(renderer.domElement);
 
@@ -200,25 +169,66 @@ function init() {
 
 }
 
+function setBoxSize(){
+    // Set top left and btm right px based on current window size
+    let cw = width/2;
+    let ch = height/2;
+    let new_topLeft_px = new THREE.Vector2(cw-150, ch-150);
+    let new_btmRight_px = new THREE.Vector2(cw+150, ch+150);
+
+    // Set normalized vals (conver to NDC)
+    let new_topLeft_ndc = new THREE.Vector3(0,0,0.5);
+    new_topLeft_ndc.x = map(new_topLeft_px.x, 0, width, -1, 1);
+    new_topLeft_ndc.y = map(new_topLeft_px.y, 0, height, 1, -1);
+    let new_btmRight_ndc = new THREE.Vector3(0,0,0.5);
+    new_btmRight_ndc.x = map(new_btmRight_px.x, 0, width, -1, 1);
+    new_btmRight_ndc.y = map(new_btmRight_px.y, 0, height, 1, -1);
+
+    // Cast ray to go from NDC -> world space coords
+    let new_topLeft_world = new THREE.Vector3();
+    new_topLeft_ndc.unproject(camera);
+    new_topLeft_ndc.sub( camera.position ).normalize();
+    let distance = - camera.position.z / new_topLeft_ndc.z;
+    new_topLeft_world.copy( camera.position ).add( new_topLeft_ndc.multiplyScalar( distance ) );
+
+    let new_btmRight_world = new THREE.Vector3();
+    new_btmRight_ndc.unproject(camera);
+    new_btmRight_ndc.sub( camera.position ).normalize();
+    distance = - camera.position.z / new_btmRight_ndc.z;
+    new_btmRight_world.copy( camera.position ).add( new_btmRight_ndc.multiplyScalar( distance ) );
+
+    // Calc box width and height
+    let boxWidth_ = new_btmRight_world.x - new_topLeft_world.x;
+    let boxHeight_ = new_topLeft_world.y - new_btmRight_world.y;
+    return new THREE.Vector2(boxWidth_, boxHeight_);
+}
+
 function onWindowResize() {
 
-    // width = window.innerWidth;
-    // height = window.innerHeight;
+    width = document.documentElement.clientWidth;
+    height = window.innerHeight;
 
-    // cube.material.uniforms.u_width.value = width;
-    // cube.material.uniforms.u_height.value = height;
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
 
-    // camera.aspect = window.innerWidth / window.innerHeight;
-    // camera.updateProjectionMatrix();
+    renderer.setSize( width, height );
 
-    // renderer.setSize( window.innerWidth, window.innerHeight );
+    // Update size of circle box
+    boxSz = setBoxSize();
+    let newCubeGeom = new THREE.BoxGeometry( boxSz.x, boxSz.y, 1 );
+    cube.geometry.dispose();
+    cube.geometry = newCubeGeom;
 
+    cube.material.uniforms.u_width.value = width;
+    cube.material.uniforms.u_height.value = height;
 }
 
 
 
 function animate() {
     time = performance.now() * 0.0001;
+
+    cube.material.uniforms.u_texture = renderTarget.texture;
     
     requestAnimationFrame( animate );
     render();
@@ -227,6 +237,7 @@ function animate() {
 
 function render() {
 
+    renderer.render( scene, camera, renderTarget, true );
     renderer.render( scene, camera );
 
 }

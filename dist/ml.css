@@ -9,11 +9,12 @@ html {
     line-height: 1.4;
     /*letter-spacing: 1.0px;*/
     -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
+    
 }
 
 body {
     min-height:101%;
-    overflow:scroll;
+    overflow:auto;
     background: #fff;
     color: #2d2d2d;
     margin: 50px; /* > 550px */
@@ -41,6 +42,7 @@ body {
     max-width:640px;
     margin:0;
     overflow: hidden;
+    z-index: 1;
 }
 
 /*
@@ -175,6 +177,7 @@ a, .hiddenTxt {
 
 #overlayImg, #overlaySvg{
     position:fixed;
+    overflow: auto;
     top: 50%;
     left: 50%;
     margin-right: -50%;
@@ -183,11 +186,12 @@ a, .hiddenTxt {
 }
 
 #overlaySvg{
-    z-index:1;
+    z-index:2;
 }
 
 #threejs_canvas canvas{
     position:fixed;
+    /* overflow: auto; */
     top:0;
     left:0;
     width:100vw;

@@ -4,6 +4,7 @@ varying vec2 vUv;
 uniform float u_time;
 uniform float u_width;
 uniform float u_height;
+uniform sampler2D u_texture;
 varying float x; // -0.5 to 0.5
 varying float y; // -0.5 to 0.5
 
@@ -46,12 +47,15 @@ void main() {
 
     float distFromCenter = distance(p, vec2(0.5,0.5));
     float radius = 0.5;
-    if(distFromCenter > radius) discard;
-    vec4 c = vec4(0.0,0.0,0.0, 1.0);
+    //if(distFromCenter > radius) discard;
+
+    vec4 texCol = texture2D(u_texture, vUv);
+
+    //vec4 c = vec4(0.0,0.0,0.0, 1.0);
 
     ///Discard everything outside the
     // if(distance(p,vec2(0.5)) < 0.5) c.r = 1.0;
     // else discard;
-    gl_FragColor = c;
+    gl_FragColor = texCol;
 }`;
 export default green_frag;
