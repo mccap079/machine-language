@@ -21,26 +21,37 @@ float random( vec2 p )
     return fract( cos( dot(p,K1) ) * 12345.6789 );
 }
 
+//https://thebookofshaders.com/07/
+float circle(in vec2 _p, in float _radius){
+    vec2 dist = _p-vec2(0.5);
+	return 1.0 - smoothstep(_radius-(_radius*0.01),
+                            _radius+(_radius*0.01),
+                            dot(dist,dist)*4.0);
+}
+
 void main() {
 
     vec2 p_screen = vec2(floor(gl_FragCoord.x), floor(gl_FragCoord.y));
     
     // if (mod(p_screen.x, 4.0) != 0.0){ discard;
 
-    float x_normal = x + 0.5;
-    float y_normal = y + 0.5;
-
-    vec2 p = vec2(floor(x_normal * u_width), 
-                  floor(y_normal * u_height));
+    vec2 p = vec2(x + 0.5, 
+                  y + 0.5);
     
-    // if(p.x > 0.5) discard;
+    //if(p.x > 0.5) discard;
 
     float perc = mod(u_time * 3.0, u_width);
     float rand = 1.0;
     float randSpread = 0.0;
 
-    vec4 c = vec4(p.x, 0.0, 0.0, 1.0);
+    float distFromCenter = distance(p, vec2(0.5,0.5));
+    float radius = 0.5;
+    if(distFromCenter > radius) discard;
+    vec4 c = vec4(0.0,0.0,0.0, 1.0);
 
+    ///Discard everything outside the
+    // if(distance(p,vec2(0.5)) < 0.5) c.r = 1.0;
+    // else discard;
     gl_FragColor = c;
 }`;
 export default green_frag;
