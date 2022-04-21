@@ -2,34 +2,34 @@ import * as THREE from 'three';
 
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
-import green_vert from "./green-vert.js";
-import green_frag from "./green-frag.js";
+import circle_vert from "./circle-vert.js";
+import circle_frag from "./circle-frag.js";
+import frag_screen from './frag_screen.js';
+import vert from './vert.js';
 
 let container;
 let cube; 
-let cubeBoundingBox;
 let boxSz;
 
-let camera, scene, renderer;
+let camera, cameraRT, scene, sceneRT, sceneScreen, renderer;
 
 let time;
-let mouseX = 0, mouseY = 0;
 
 var width = document.documentElement.clientWidth;
 var height = window.innerHeight;
-
-console.log("INNER WIDTH = " + window.innerWidth);
-console.log("CLIENT WIDTH = " + document.documentElement.clientWidth);
+var frameNum = 0;
 
 let headObj;
-let headScale = 25;
+let headScale = 150;
 
 var light = new THREE.AmbientLight(0xDDDDDD, 0.8); // make head white
 var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 directionalLight.castShadow = true;
-var scaleSpeed = getRandomIntInclusive(0.01, 1);
+let scaleSpeedMax = 20;
+let scaleSpeedMin = 10;
+var scaleSpeed = getRandomIntInclusive(scaleSpeedMin, scaleSpeedMax);
 
-let renderTarget = new THREE.WebGLRenderTarget( width, height, { format: THREE.RGBFormat } );
+let rtTexture, quadMat, quad;
 
 init();
 animate();
@@ -40,19 +40,53 @@ function init() {
     container = document.createElement( 'div' );
     document.body.appendChild( container );
 
-    // scene
+    // scenes
 
-    scene = new THREE.Scene();
-
-    camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 2000);
-    //camera = new THREE.OrthographicCamera(width / -2, width / 2, height / 2, height / -2, 1, 1000);
-    camera.position.z = 100;
-    camera.lookAt( scene.position );
-    scene.add( camera );
-    
+    scene = new THREE.Scene(); //Add cube to this
+    sceneRT = new THREE.Scene(); //Add head to this
+    sceneScreen = new THREE.Scene();
 
     scene.add(directionalLight);
     scene.add(light);
+
+    // cameras
+
+    camera = new THREE.PerspectiveCamera(30, width / height, 1, 10000);
+    //camera = new THREE.OrthographicCamera(width / -2, width / 2, height / 2, height / -2, 1, 1000);
+    camera.position.z = 100;
+    camera.lookAt( scene.position );  
+    
+    cameraRT = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, - 10000, 10000 );
+    cameraRT.position.z = 100;
+
+    // rtTex stuff
+
+    rtTexture = new THREE.WebGLRenderTarget( width, height );
+
+    quadMat = new THREE.MeshBasicMaterial({
+        color: 0xffffff
+    });
+
+    const materialScreen = new THREE.ShaderMaterial( {
+
+        uniforms: { tDiffuse: { value: rtTexture.texture } },
+        vertexShader: vert,
+        fragmentShader: frag_screen,
+
+        depthWrite: false
+
+    } );
+
+    // Create an intermediary quad that renders the entire scene to offset the upside down output
+    const plane = new THREE.PlaneGeometry( width, height );
+
+    quad = new THREE.Mesh( plane, quadMat );
+    quad.position.z = - 100;
+    sceneRT.add( quad );
+
+    quad = new THREE.Mesh( plane, materialScreen );
+    quad.position.z = - 100;
+    sceneScreen.add( quad );
     
     // manager
 
@@ -60,17 +94,14 @@ function init() {
 
         headObj.traverse( function ( child ) {
 
-            if ( child.isMesh ) child.material = new THREE.MeshBasicMaterial({color: 0x0000ff}); 
+            if ( child.isMesh ) child.material = new THREE.MeshBasicMaterial({color: 0x000000}); 
 
         } );
-
-        scene.add( headObj );
-
     }
 
     const manager = new THREE.LoadingManager( loadModel );
 
-    // model
+    // Upload faceModel obj
 
     function onProgress( xhr ) {
 
@@ -89,68 +120,37 @@ function init() {
 
         headObj = obj;
         headObj.scale.set(headScale,headScale,headScale);
-        console.log("headObj.scale.xyz = " + headObj.scale.x + ", " + headObj.scale.y + ", " + headObj.scale.z);
+        headObj.position.set(0,0,100);
+        sceneRT.add( headObj );
     }, onProgress, onError );
-
-    // Translate circle pixel dimensions (300x300) to worldspace points
-
-    //                  v normalized output of Vector3.project()
-    //                      v pixel value of screen position
-
-    // top-left     x: -1 = 0px
-    // top-left     y: -1 = 0px
-    // bottom-right x:  1 = window.innerWidth
-    // bottom-right y:  1 = window.innerHeight
-
-    /// Calc bounding box for the cube to get its worldspace size
-    // cubeBoundingBox = new THREE.Box3().setFromObject( cube );
-	// let boxSize = new THREE.Vector3();
-	// cubeBoundingBox.getSize(boxSize);
-    // console.log("BoxSize.x: " + boxSize.x);
-
-    //get worldspace top left
-    // let topLeft_px = new THREE.Vector2(0,0);
-    // let btmRight_px = new THREE.Vector2(0,0);
-    // let topLeft_worldspace = new THREE.Vector3(cube.position.x - (boxSize.x/2),
-    //                                            cube.position.y - (boxSize.y/2), 0);
-    // let btmRight_worldspace = new THREE.Vector3(cube.position.x + (boxSize.x/2),
-    //                                            cube.position.y + (boxSize.y/2), 0);
-
-    // let cubeCenter_projection = cube.position.project(camera);
-    // let topLeft_projection = topLeft_worldspace.project(camera);
-    // let btmRight_projection = btmRight_worldspace.project(camera);
-
-    // topLeft_px.x = map(topLeft_projection.x, -1, 1, 0, window.innerWidth);
-    // topLeft_px.y = map(topLeft_projection.y, -1, 1, 0, window.innerHeight);
-    // btmRight_px.x = map(btmRight_projection.x, -1, 1, 0, window.innerWidth);
-    // btmRight_px.y = map(btmRight_projection.y, -1, 1, 0, window.innerHeight);
 
     boxSz = setBoxSize();
     
-    // Circle
+    // Circle box
 
     const geometry = new THREE.BoxGeometry( boxSz.x, boxSz.y, 1 );
-    const material = new THREE.ShaderMaterial( {
+    const cubeMat = new THREE.ShaderMaterial( {
         uniforms:{
-            u_time: { value: 1.0 },
             u_width: { value: boxSz.x },
             u_height: { value: boxSz.y },
-            u_texture: { value: renderTarget.texture }
+            u_texture: { value: rtTexture.texture },
+            u_resolution_screen: {value: new THREE.Vector2(width, height)},
+            u_frameNum: {value: 0.0}
         },
-        vertexShader: green_vert,
-	    fragmentShader: green_frag
+        vertexShader: circle_vert,
+	    fragmentShader: circle_frag
     } );
-    cube = new THREE.Mesh( geometry, material );
+    cube = new THREE.Mesh( geometry, cubeMat );
     scene.add( cube );
 
     /// Renderer
 
-    // renderer = new THREE.WebGLRenderer({alpha:true});
     renderer = new THREE.WebGLRenderer({});
     renderer.setClearColor(0xff0000);
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( width, height );
-    //container.appendChild( renderer.domElement );
+    renderer.autoClear = false;
+
     threejs_canvas.appendChild(renderer.domElement);
 
     document.addEventListener('mousemove', scaleAction);
@@ -213,22 +213,32 @@ function onWindowResize() {
 
     renderer.setSize( width, height );
 
-    // Update size of circle box
+    // // Update size of circle box
     boxSz = setBoxSize();
     let newCubeGeom = new THREE.BoxGeometry( boxSz.x, boxSz.y, 1 );
     cube.geometry.dispose();
     cube.geometry = newCubeGeom;
 
-    cube.material.uniforms.u_width.value = width;
-    cube.material.uniforms.u_height.value = height;
+    // cube.material.uniforms.u_width.value = boxSz.x;
+    // cube.material.uniforms.u_height.value = boxSz.y;
+    // cube.material.uniforms.u_resolution_screen = new THREE.Vector2(width, height); //TODO: debug why this causes tons of errors
+
+    const newCubeMat = new THREE.ShaderMaterial( {
+        uniforms:{
+            u_width: { value: boxSz.x },
+            u_height: { value: boxSz.y },
+            u_texture: { value: rtTexture.texture },
+            u_resolution_screen: {value: new THREE.Vector2(width, height)},
+            u_frameNum: {value: 0.0}
+        },
+        vertexShader: circle_vert,
+	    fragmentShader: circle_frag
+    } );
+    cube.material.dispose();
+    cube.material = newCubeMat;
 }
 
-
-
 function animate() {
-    time = performance.now() * 0.0001;
-
-    cube.material.uniforms.u_texture = renderTarget.texture;
     
     requestAnimationFrame( animate );
     render();
@@ -237,13 +247,28 @@ function animate() {
 
 function render() {
 
-    renderer.render( scene, camera, renderTarget, true );
-    renderer.render( scene, camera );
+    time = performance.now() * 0.0001;
+
+    cube.material.uniforms.u_frameNum.value = frameNum;
+    
+    frameNum++;
+    if(frameNum >= 10000) frameNum = 0;
+
+    camera.lookAt(scene.position);
+
+    renderer.setRenderTarget( rtTexture );
+	renderer.clear();
+    renderer.render( sceneRT, cameraRT );
+
+    renderer.setRenderTarget( null );
+	renderer.clear();
+    renderer.render( sceneScreen, cameraRT );
+
+    renderer.render(scene, camera);
 
 }
 
 function scaleAction() {
-    //console.log("headObj.scale.xyz = " + headObj.scale.x + ", " + headObj.scale.y + ", " + headObj.scale.z);
     if (headObj.scale.x > 0) {
         var pickAxis = Math.random();
         if (pickAxis > 0.5) {
@@ -252,12 +277,16 @@ function scaleAction() {
             headObj.scale.y -= scaleSpeed * Math.random();
         }
     } else {
-        scaleSpeed = Math.random() * 10;
-        if (scaleSpeed < 0.02) {
-            scaleSpeed = 0.02;
+        scaleSpeed = Math.random() * scaleSpeedMax;
+        if (scaleSpeed < scaleSpeedMin) {
+            scaleSpeed = scaleSpeedMin;
         }
-        headObj.scale.set(headScale, headScale, headScale);
-        //camera.position.x = getRandomIntInclusive(-50, 50);
+        let newHeadScale = new THREE.Vector3(
+            headScale + ((Math.random() - 0.5) * 100),
+            headScale + ((Math.random() - 0.5) * 100),
+            headScale + ((Math.random() - 0.5) * 100)
+        )
+        headObj.scale.set(newHeadScale.x, newHeadScale.y, newHeadScale.z);
     }
     headObj.rotation.y += time * Math.PI / 180
 }
